@@ -1,4 +1,5 @@
 # Clarify — Frontend
+🌐 **Live Demo**: https://clarify-frontend-production.up.railway.app
 
 > React + TypeScript frontend for Clarify, a personal finance app with dashboard analytics, transaction management, and ML-powered expense forecasting.
 
@@ -39,7 +40,7 @@
 
 ### Prerequisites
 - Node.js 18+
-- [Clarify Backend](https://github.com/YOUR_USERNAME/clarify-backend) running on `http://localhost:8080`
+- [Clarify Backend](https://github.com/YuxiLuoGood/clarify-backend) running on `http://localhost:8080`
 
 ### Run locally
 
