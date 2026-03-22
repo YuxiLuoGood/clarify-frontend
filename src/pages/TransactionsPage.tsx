@@ -30,7 +30,7 @@ export default function TransactionsPage() {
     transactionApi.getAll(month).then(res => setTransactions(res.data));
   };
 
-  useEffect(() => { load(); }, [month]);
+  useEffect(() => { load(); }, [month]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
