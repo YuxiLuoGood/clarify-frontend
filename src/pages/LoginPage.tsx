@@ -46,7 +46,7 @@ export default function LoginPage() {
     <div style={{
       minHeight: '100vh',
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
+      gridTemplateColumns: 'clamp(0px, 45vw, 520px) 1fr',
     }}>
       {/* Left panel */}
       <div style={{
@@ -56,6 +56,7 @@ export default function LoginPage() {
         justifyContent: 'center',
         padding: '60px',
         color: 'white',
+        overflow: 'hidden',
       }}>
         <div style={{ fontSize: 36, marginBottom: 16 }}>✦</div>
         <h1 style={{ fontSize: 36, fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>

@@ -6,6 +6,83 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f8fafc;
+  color: #333;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: #4f46e5; color: white; }
+.btn-danger  { background: #ef4444; color: white; }
+.btn-ghost   { background: #f1f5f9; color: #333; }
+
+input, select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus { border-color: #4f46e5; }
+
+.page { max-width: 1100px; margin: 32px auto; padding: 0 24px; }
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .page { margin: 16px auto; padding: 0 16px; }
+
+  /* stat cards: 1 column on mobile */
+  .stat-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* charts: 1 column on mobile */
+  .chart-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* transaction form: 1 column on mobile */
+  .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* transaction table: hide date column, shrink actions */
+  .tx-date { display: none; }
+  .tx-table-header { grid-template-columns: 2fr 1fr 1fr 80px !important; }
+  .tx-table-row    { grid-template-columns: 2fr 1fr 1fr 80px !important; }
+
+  /* navbar: smaller padding */
+  .navbar-inner {
+    padding: 0 16px !important;
+  }
+  .navbar-links { gap: 8px !important; }
+  .navbar-links a { font-size: 13px !important; }
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: #f5f7fa;
   color: #333;
 }

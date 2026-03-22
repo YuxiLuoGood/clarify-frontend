@@ -140,7 +140,7 @@ export default function TransactionsPage() {
             <h3 style={{ fontSize: 15, fontWeight: 600, color: '#0f172a', marginBottom: 20 }}>
               {editId ? '✏️ Edit Transaction' : '➕ New Transaction'}
             </h3>
-            <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
+            <form onSubmit={handleSubmit} className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }}>
               {/* Amount */}
               <div>
                 <label style={{ fontSize: 12, fontWeight: 600, color: '#64748b', display: 'block', marginBottom: 6 }}>Amount</label>
@@ -214,13 +214,13 @@ export default function TransactionsPage() {
           ) : (
             <>
               {/* Table header */}
-              <div style={{
+              <div className="tx-table-header" style={{
                 display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 120px',
                 padding: '12px 24px', background: '#f8fafc',
                 borderBottom: '1px solid #f1f5f9',
               }}>
                 {['Description', 'Category', 'Date', 'Amount', 'Actions'].map(h => (
-                  <span key={h} style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{h}</span>
+                  <span key={h} className={h === 'Date' ? 'tx-date' : ''} style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{h}</span>
                 ))}
               </div>
 
