@@ -100,16 +100,29 @@ export default function TransactionsPage() {
             <p style={{ fontSize: 13, color: '#94a3b8', marginTop: 2 }}>Manage your income and expenses</p>
           </div>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <input
-              type="month" value={month} onChange={e => setMonth(e.target.value)}
-              style={{ width: 160, padding: '8px 12px', borderRadius: 10, border: '1px solid #e2e8f0', fontSize: 13, background: 'white', outline: 'none' }}
-            />
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              background: 'white', border: '1px solid #e2e8f0',
+              borderRadius: 10, padding: '6px 12px',
+            }}>
+              <span style={{ fontSize: 12, color: '#94a3b8', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                🔍 Filter by
+              </span>
+              <input
+                type="month" value={month}
+                onChange={e => setMonth(e.target.value)}
+                style={{
+                  width: 140, border: 'none', outline: 'none',
+                  fontSize: 13, background: 'transparent', padding: 0,
+                }}
+              />
+            </div>
             <button
               onClick={() => { setShowForm(true); setEditId(null); setForm(EMPTY_FORM); }}
               style={{
                 padding: '8px 18px', background: '#4f46e5', color: 'white',
                 border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600,
-                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
+                cursor: 'pointer', whiteSpace: 'nowrap',
               }}
             >
               + Add Transaction
@@ -215,13 +228,16 @@ export default function TransactionsPage() {
             <>
               {/* Table header */}
               <div className="tx-table-header" style={{
-                display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 120px',
+                display: 'grid',
+                gridTemplateColumns: window.innerWidth < 768 ? '2fr 1fr 1fr 80px' : '2fr 1fr 1fr 1fr 120px',
                 padding: '12px 24px', background: '#f8fafc',
                 borderBottom: '1px solid #f1f5f9',
               }}>
-                {['Description', 'Category', 'Date', 'Amount', 'Actions'].map(h => (
-                  <span key={h} className={h === 'Date' ? 'tx-date' : ''} style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{h}</span>
-                ))}
+                {['Description', 'Category', 'Date', 'Amount', 'Actions']
+                  .filter(h => window.innerWidth < 768 ? h !== 'Date' : true)
+                  .map(h => (
+                    <span key={h} style={{ fontSize: 11, fontWeight: 700, color: '#94a3b8', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{h}</span>
+                  ))}
               </div>
 
               {/* Rows */}
