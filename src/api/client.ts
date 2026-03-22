@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 所有请求都发到后端的 8080 端口
 const client = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8080',
 });
 
 // 每次发请求前，自动把 token 加到请求头里
