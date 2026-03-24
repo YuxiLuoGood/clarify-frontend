@@ -2,18 +2,32 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import TransactionsPage from './pages/TransactionsPage';
+import BudgetAlertToast from './components/BudgetAlertToast';
+import { useWebSocket } from './useWebSocket';
 
-// 检查用户是否已登录（有没有 token）
 const isLoggedIn = () => !!localStorage.getItem('token');
 
-// 需要登录才能访问的页面，没登录就跳转到登录页
+function getEmail(): string | null {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.sub || null;
+  } catch {
+    return null;
+  }
+}
+
 function PrivateRoute({ children }: { children: React.ReactElement }) {
   return isLoggedIn() ? children : <Navigate to="/login" />;
 }
 
-export default function App() {
+function AppWithAlerts() {
+  const email = getEmail();
+  const { alerts, dismissAlert } = useWebSocket(email);
+
   return (
-    <BrowserRouter>
+    <>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={
@@ -22,9 +36,17 @@ export default function App() {
         <Route path="/transactions" element={
           <PrivateRoute><TransactionsPage /></PrivateRoute>
         } />
-        {/* 默认跳转到 dashboard */}
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
+      <BudgetAlertToast alerts={alerts} onDismiss={dismissAlert} />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppWithAlerts />
     </BrowserRouter>
   );
 }
