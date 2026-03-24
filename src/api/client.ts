@@ -34,6 +34,9 @@ export const authApi = {
 
   register: (email: string, password: string, name: string) =>
     client.post<{ token: string }>('/api/auth/register', { email, password, name }),
+
+  googleLogin: (credential: string) =>
+    client.post<{ token: string }>('/api/auth/google', { credential }),
 };
 
 // 交易相关

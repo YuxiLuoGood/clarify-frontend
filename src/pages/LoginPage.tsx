@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import { authApi } from '../api/client';
 
 function useWindowWidth() {
@@ -165,6 +166,27 @@ export default function LoginPage() {
             <div style={{ flex: 1, height: 1, background: '#e2e8f0' }} />
             <span style={{ fontSize: 12, color: '#94a3b8' }}>or</span>
             <div style={{ flex: 1, height: 1, background: '#e2e8f0' }} />
+          </div>
+
+          {/* Google Login Button */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+            <GoogleLogin
+              onSuccess={async (response) => {
+                try {
+                  const res = await authApi.googleLogin(response.credential!);
+                  localStorage.setItem('token', res.data.token);
+                  navigate('/dashboard');
+                } catch {
+                  setErrors({ general: 'Google login failed. Please try again.' });
+                }
+              }}
+              onError={() => setErrors({ general: 'Google login failed.' })}
+              theme="outline"
+              size="large"
+              text={isRegister ? 'signup_with' : 'signin_with'}
+              shape="rectangular"
+              width="368"
+            />
           </div>
 
           <div style={{
