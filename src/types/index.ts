@@ -1,23 +1,28 @@
-// 交易记录
+export const CATEGORIES = ['FOOD', 'TRANSPORT', 'SHOPPING', 'BILLS', 'OTHER'] as const;
+export type Category = (typeof CATEGORIES)[number];
+
+export type TransactionType = 'INCOME' | 'EXPENSE';
+
+/** A transaction as returned by the API. */
 export interface Transaction {
   id: string;
   amount: number;
-  category: 'FOOD' | 'TRANSPORT' | 'SHOPPING' | 'BILLS' | 'OTHER';
-  description: string;
-  type: 'INCOME' | 'EXPENSE';
-  date: string;
+  category: Category;
+  description: string | null;
+  type: TransactionType;
+  date: string; // YYYY-MM-DD
+  createdAt: string | null;
 }
 
-// 新增/修改交易时发给后端的数据
+/** Body for creating or updating a transaction. */
 export interface TransactionRequest {
   amount: number;
-  category: string;
+  category: Category;
   description: string;
-  type: string;
+  type: TransactionType;
   date: string;
 }
 
-// 月度统计
 export interface MonthlyStats {
   totalIncome: number;
   totalExpense: number;
@@ -25,9 +30,27 @@ export interface MonthlyStats {
   byCategory: Record<string, number>;
 }
 
-// 趋势数据（每个月的收支）
 export interface TrendData {
-  month: string;
+  month: string; // YYYY-MM
   totalExpense: number;
   totalIncome: number;
+}
+
+export interface ForecastPoint {
+  month: string;
+  predictedExpense: number;
+  isForecast: boolean;
+}
+
+export interface TokenResponse {
+  token: string;
+}
+
+/** Budget alert pushed over the WebSocket. */
+export interface BudgetAlertMessage {
+  type: 'BUDGET_EXCEEDED';
+  category: string;
+  spent: number;
+  budget: number;
+  message: string;
 }

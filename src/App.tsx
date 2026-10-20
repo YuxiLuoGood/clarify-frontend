@@ -1,42 +1,28 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import DashboardPage from './pages/DashboardPage';
-import TransactionsPage from './pages/TransactionsPage';
+import type { ReactElement } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { AuthProvider, useAuth } from './auth/AuthContext';
 import BudgetAlertToast from './components/BudgetAlertToast';
-import { useWebSocket } from './useWebSocket';
+import { useBudgetAlerts } from './hooks/useBudgetAlerts';
+import DashboardPage from './pages/DashboardPage';
+import LoginPage from './pages/LoginPage';
+import TransactionsPage from './pages/TransactionsPage';
 
-const isLoggedIn = () => !!localStorage.getItem('token');
-
-function getEmail(): string | null {
-  const token = localStorage.getItem('token');
-  if (!token) return null;
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.sub || null;
-  } catch {
-    return null;
-  }
+function PrivateRoute({ children }: { children: ReactElement }) {
+  const { token } = useAuth();
+  return token ? children : <Navigate to="/login" replace />;
 }
 
-function PrivateRoute({ children }: { children: React.ReactElement }) {
-  return isLoggedIn() ? children : <Navigate to="/login" />;
-}
-
-function AppWithAlerts() {
-  const email = getEmail();
-  const { alerts, dismissAlert } = useWebSocket(email);
+function AppRoutes() {
+  const { token } = useAuth();
+  const { alerts, dismissAlert } = useBudgetAlerts(token);
 
   return (
     <>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={
-          <PrivateRoute><DashboardPage /></PrivateRoute>
-        } />
-        <Route path="/transactions" element={
-          <PrivateRoute><TransactionsPage /></PrivateRoute>
-        } />
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="/login" element={token ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
+        <Route path="/dashboard" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
+        <Route path="/transactions" element={<PrivateRoute><TransactionsPage /></PrivateRoute>} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
       <BudgetAlertToast alerts={alerts} onDismiss={dismissAlert} />
     </>
@@ -46,7 +32,9 @@ function AppWithAlerts() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppWithAlerts />
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </BrowserRouter>
   );
 }
